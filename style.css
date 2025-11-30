@@ -1,0 +1,736 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Prompt", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #ffe4ec, #e0f4ff);
+  color: #333;
+  overflow-x: hidden;
+}
+
+/* ---------- Floating Hearts Background ---------- */
+.hearts {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.heart {
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0.35;
+  animation: floatUp 14s linear infinite;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  20% { opacity: 0.4; }
+  80% { opacity: 0.4; }
+  100% {
+    transform: translateY(-10vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* ---------- COVER PAGE (หน้าปก) ---------- */
+#cover {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  background: radial-gradient(circle at top, #fff0f6 0, #ffc1d9 40%, #ff8fb1 80%);
+  color: white;
+  z-index: 999;
+}
+
+#cover-inner {
+  max-width: 500px;
+  padding: 26px 22px 30px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+#cover-inner::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255,255,255,0.9), transparent 60%);
+  top: -80px;
+  right: -60px;
+  opacity: 0.7;
+}
+
+#cover-inner::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(255,255,255,0.6), transparent 60%);
+  bottom: -60px;
+  left: -40px;
+  opacity: 0.9;
+}
+
+#cover h1 {
+  position: relative;
+  margin: 0 0 8px;
+  font-size: 2.1rem;
+  z-index: 1;
+}
+
+#cover h2 {
+  position: relative;
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  opacity: 0.9;
+  z-index: 1;
+}
+
+#cover p {
+  position: relative;
+  margin: 0 0 20px;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  opacity: 0.92;
+  z-index: 1;
+}
+
+#cover .small-note {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  margin-top: 8px;
+}
+
+#enter-btn {
+  position: relative;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #ff8fb1, #ff5f9a);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(255, 95, 154, 0.7);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  z-index: 1;
+}
+
+#enter-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(255, 95, 154, 0.9);
+  filter: brightness(1.03);
+}
+
+#enter-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(255, 95, 154, 0.8);
+}
+
+.music-hint {
+  position: relative;
+  font-size: 0.8rem;
+  opacity: 0.9;
+  margin-top: 6px;
+  z-index: 1;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+  display: none; /* ซ่อนจนกว่าจะกดปุ่ม */
+  animation: fadeInMain 0.6s ease forwards;
+}
+
+@keyframes fadeInMain {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 0.98rem;
+  opacity: 0.8;
+}
+
+/* ---------- NAV TABS ---------- */
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.nav button {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  font-size: 0.95rem;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+}
+
+.nav button.active {
+  background: #ff8fb1;
+  color: white;
+  box-shadow: 0 6px 14px rgba(255, 143, 177, 0.6);
+  transform: translateY(-1px);
+}
+
+.nav button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+.btn {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8fb1, #ff5f9a);
+  color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(255, 143, 177, 0.6);
+  transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(255, 143, 177, 0.8);
+  filter: brightness(1.05);
+}
+
+/* ---------- MEMORY GAME ---------- */
+#memory-game {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.memory-card {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* 1:1 */
+  cursor: pointer;
+  perspective: 800px;
+}
+
+.memory-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: #ffeef6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+  transform-style: preserve-3d;
+}
+
+.memory-front,
+.memory-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+.memory-front {
+  background: #ffb6d9;
+  font-size: 1.3rem;
+}
+
+.memory-back {
+  background: white;
+  transform: rotateY(180deg);
+}
+
+.memory-card.flipped .memory-inner,
+.memory-card.matched .memory-inner {
+  transform: rotateY(180deg);
+}
+
+.memory-card.matched {
+  cursor: default;
+  opacity: 0.75;
+  box-shadow: 0 0 0 2px rgba(255, 143, 177, 0.7);
+}
+
+.game-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+#game-message {
+  font-weight: 500;
+}
+
+/* ---------- QUIZ ---------- */
+.quiz-question {
+  margin-bottom: 16px;
+}
+
+.quiz-question h3 {
+  margin: 0 0 6px;
+  font-size: 0.98rem;
+}
+
+.quiz-option {
+  margin: 2px 0;
+  font-size: 0.95rem;
+  display: block;
+}
+
+.quiz-result {
+  margin-top: 14px;
+  font-weight: bold;
+}
+
+/* ---------- STORIES ---------- */
+.timeline {
+  position: relative;
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #ffb6d9;
+}
+
+.story {
+  position: relative;
+  margin-bottom: 20px;
+  padding-left: 15px;
+}
+
+.story::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #ff8fb1;
+  box-shadow: 0 0 0 4px rgba(255,143,177,0.3);
+}
+
+.story-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.story-date {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.story-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.love-note {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 12px;
+}
+
+.love-note span {
+  font-weight: 600;
+}
+
+.big-heart {
+  text-align: center;
+  font-size: 2.1rem;
+  margin-top: 12px;
+}
+
+/* ---------- RESPONSIVE (เดิม) ---------- */
+@media (max-width: 600px) {
+  #memory-game {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #cover h1 {
+    font-size: 1.8rem;
+  }
+
+  #cover h2 {
+    font-size: 1.05rem;
+  }
+
+  #cover p {
+    font-size: 0.9rem;
+  }
+}
+
+/* ---------- ส่วนบนขวา: ปุ่มโหมดกลางคืน ---------- */
+.top-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+/* ---------- นับวันรัก ---------- */
+#love-counter-card .small-text,
+#love-notes-card .small-text,
+#memory-calendar-card .small-text,
+#gallery-card .small-text,
+#love-letter-card .small-text,
+#voice-card .small-text {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.love-counter-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+#love-start-date {
+  padding: 4px 8px;
+  border-radius: 10px;
+  border: 1px solid #ffc1d9;
+}
+
+#love-days-result {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* ---------- ข้อความสุ่มรัก ---------- */
+#love-note-display {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #fff3f8;
+  border: 1px solid #ffd1e4;
+  font-size: 0.95rem;
+}
+
+/* ---------- แกลลอรี่รูป ---------- */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.gallery-grid img:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  filter: brightness(1.03);
+}
+
+/* Lightbox */
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.gallery-lightbox img {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* ---------- ปฏิทินความทรงจำ ---------- */
+#memory-select {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #ffc1d9;
+  font-size: 0.9rem;
+}
+
+#memory-display {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ---------- จดหมาย ---------- */
+#love-letter-input {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid #ffc1d9;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.love-letter-actions {
+  margin-top: 8px;
+}
+
+#love-letter-status {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* ---------- ข้อความเสียง ---------- */
+.voice-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+#voice-status {
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+#voice-playback {
+  margin-top: 10px;
+}
+
+#voice-playback audio {
+  width: 100%;
+}
+
+/* ---------- วงล้อเสี่ยงรัก ---------- */
+.wheel {
+  margin: 10px auto;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 6px solid #ffd1e4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle, #fff, #ffe4ec);
+}
+
+.wheel-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.wheel.spinning {
+  animation: wheelSpin 1.2s ease-out;
+}
+
+@keyframes wheelSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(720deg); }
+}
+
+#wheel-result {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ---------- เกมหาใจ ---------- */
+.find-heart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.find-heart-cell {
+  position: relative;
+  padding-top: 100%;
+  border-radius: 12px;
+  background: #ffeef6;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+
+.find-heart-cell-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.find-heart-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+
+.find-heart-cell.revealed {
+  background: #ffb6d9;
+}
+
+/* ---------- ปุ่มดอกไม้บาน ---------- */
+.bloom-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 22px;
+  z-index: 900;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffb6d9, #ff8fb1);
+  color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 6px 14px rgba(255, 143, 177, 0.8);
+  cursor: pointer;
+}
+
+.bloom-flower {
+  position: fixed;
+  font-size: 1.6rem;
+  pointer-events: none;
+  animation: bloomFloat 2.2s ease-out forwards;
+}
+
+@keyframes bloomFloat {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-120px) scale(1.2); opacity: 0; }
+}
+
+/* ---------- โหมดกลางคืน ---------- */
+body.dark-mode {
+  background: radial-gradient(circle at top, #131628, #050510);
+  color: #f5f5f5;
+}
+
+body.dark-mode .card {
+  background: rgba(10, 12, 32, 0.96);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.7);
+}
+
+body.dark-mode .nav button {
+  background: #181a35;
+  color: #f5f5f5;
+}
+
+body.dark-mode .nav button.active {
+  background: #ff5f9a;
+}
+
+body.dark-mode .timeline::before {
+  background: #ff8fb1;
+}
+
+body.dark-mode .story::before {
+  background: #ff5f9a;
+}
+
+body.dark-mode .gallery-grid img {
+  filter: brightness(0.95);
+}
+
+/* ---------- Responsive เพิ่มเติม ---------- */
+@media (max-width: 600px) {
+  .find-heart-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .wheel {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+.memory-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gallery-grid img {
+  width: 100%;
+  height: 160px; /* ปรับความสูงตามที่ชอบ */
+  object-fit: cover;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
